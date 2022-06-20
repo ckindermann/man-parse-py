@@ -39,6 +39,18 @@ jobs:
         run: |
             tree-sitter generate
 
+      - name: Checkout another tools repo  
+        uses: actions/checkout@v3
+        with:
+            repository: ckindermann/man-parse-rust
+            path: man-parse-rust
+
+      - name: Setup Bindings 
+        run: |
+            mv python_module.rs man-parse-rust/src/
+            mv Cargo.toml man-parse-rust/
+            echo "mod python_module;" >> man-parse-rust/src/lib.rs 
+            
         #- uses: actions/upload-artifact@v3
         #- with:
         #-   name: ${{ matrix.os }}-${{ matrix.python-version }}
