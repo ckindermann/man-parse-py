@@ -35,7 +35,7 @@ jobs:
             cargo install tree-sitter-cli
 
       - name: Build parser
-        working-directory: ./tree-sitter-manchester
+        working-directory: tree-sitter-manchester
         run: |
             tree-sitter generate
 
