@@ -18,7 +18,7 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v3
         with:
-            repository: ckindermann/tree-sitter-manchester.git
+            repository: ckindermann/tree-sitter-manchester
             #path: my-tools
 
       - name: Install latest nightly
