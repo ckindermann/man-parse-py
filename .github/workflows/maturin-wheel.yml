@@ -59,8 +59,7 @@ jobs:
             maturin build
 
       - name: Download wheel 
-        #working-directory: man-parse-rust
-        - uses: actions/upload-artifact@v3
-        - with:
-        -   name: ${{ matrix.os }}-${{ matrix.python-version }}
-        -   path: man-parse-rust/target/wheels/*.whl
+        uses: actions/upload-artifact@v3
+        with:
+            name: ${{ matrix.os }}-${{ matrix.python-version }}
+            path: man-parse-rust/target/wheels/*.whl
