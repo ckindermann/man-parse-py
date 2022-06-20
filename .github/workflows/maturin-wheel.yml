@@ -8,7 +8,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2019, macOS-10.15]
+        os: [ubuntu-20.04, macOS-10.15]
+        #os: [ubuntu-20.04, windows-2019, macOS-10.15] #windows has problems with move
         python-version: ['2.7', '3.7', '3.8']
 
 
@@ -50,8 +51,16 @@ jobs:
             mv python_module.rs man-parse-rust/src/
             mv Cargo.toml man-parse-rust/
             echo "mod python_module;" >> man-parse-rust/src/lib.rs 
-            
-        #- uses: actions/upload-artifact@v3
-        #- with:
-        #-   name: ${{ matrix.os }}-${{ matrix.python-version }}
-        #-   path: ./dist/*.whl
+
+      - name: Build wheel 
+        working-directory: man-parse-rust
+        run: | 
+            pip install -U pip maturin
+            maturin build
+
+      - name: Download wheel 
+        #working-directory: man-parse-rust
+        - uses: actions/upload-artifact@v3
+        - with:
+        -   name: ${{ matrix.os }}-${{ matrix.python-version }}
+        -   path: man-parse-rust/target/wheels/*.whl
