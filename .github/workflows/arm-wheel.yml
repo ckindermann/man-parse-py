@@ -44,11 +44,9 @@ jobs:
               with:
                   args: >
                       bash -c
-                      "apt-get update &&
-                      apt-get install -y curl &&
-                      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y &&
-                      source $HOME/.cargo/env &&
-                      cargo install tree-sitter-cli &&
+                      "apt-get update && 
+                      apt-get install nodejs npm &&
+                      npm install tree-sitter-cli && 
                       tree-sitter generate &&
                       apt-get install -y python3.6 &&
                       python3.6 --version &&
