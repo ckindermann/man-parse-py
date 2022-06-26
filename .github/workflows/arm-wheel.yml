@@ -46,7 +46,7 @@ jobs:
                       bash -c
                       "apt-get update && 
                       apt-get -y install nodejs npm &&
-                      npm install tree-sitter-cli && 
+                      npm install tree-sitter && 
                       tree-sitter generate &&
                       apt-get install -y python3.6 &&
                       python3.6 --version &&
