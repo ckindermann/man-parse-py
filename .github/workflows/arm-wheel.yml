@@ -45,7 +45,7 @@ jobs:
                   args: >
                       bash -c
                       "apt-get update && 
-                      apt-get install nodejs npm &&
+                      apt-get -y install nodejs npm &&
                       npm install tree-sitter-cli && 
                       tree-sitter generate &&
                       apt-get install -y python3.6 &&
