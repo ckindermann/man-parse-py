@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
     build_wheels:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
 
         steps:
             - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
                       bash -c
                       "apt-get update && 
                       apt-get -y install nodejs npm &&
-                      npm install tree-sitter && 
+                      npm install tree-sitter-cli && 
                       tree-sitter generate &&
                       apt-get install -y python3.6 &&
                       python3.6 --version &&
