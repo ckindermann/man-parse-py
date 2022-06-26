@@ -39,7 +39,8 @@ jobs:
               with:
                   args: 'uname -a'
 
-            - uses: docker://multiarch/ubuntu-core:arm64-bionic
+            - name: Rustup
+              uses: docker://multiarch/ubuntu-core:arm64-bionic
               with:
                   args: >
                       bash -c
@@ -48,6 +49,7 @@ jobs:
                       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
 
             - uses: docker://multiarch/ubuntu-core:arm64-bionic
+              needs: Rustup
               with:
                   args: >
                       bash -c 
