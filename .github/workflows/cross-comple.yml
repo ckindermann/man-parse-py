@@ -1,0 +1,73 @@
+name: Cross Compilation
+
+on: [push]
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          #os: [ubuntu-20.04, macOS-10.15]
+        #os: [ubuntu-20.04, windows-2019, macOS-10.15] #windows has problems with move
+        target: [aarch64, armv7] #, s390x, ppc64le, ppc64]
+
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Checkout tools repo
+        uses: actions/checkout@v3
+        with:
+            repository: ckindermann/tree-sitter-manchester
+            path: tree-sitter-manchester
+
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: nightly
+            override: true
+            components: rustfmt, clippy 
+
+      - uses: actions/setup-python@v3
+
+      - name: Install dependencies
+        run: |
+            cargo install tree-sitter-cli
+
+      - name: Build parser
+        working-directory: tree-sitter-manchester
+        run: |
+            tree-sitter generate
+
+      - name: Checkout another tools repo  
+        uses: actions/checkout@v3
+        with:
+            repository: ckindermann/man-parse-rust
+            path: man-parse-rust
+
+      - name: Setup Bindings 
+        run: |
+            mv python_module.rs man-parse-rust/src/
+            mv Cargo.toml man-parse-rust/
+            echo "mod python_module;" >> man-parse-rust/src/lib.rs 
+
+      - uses: messense/maturin-action@v1
+        with:
+            maturin-version: latest
+            target: ${{ matrix.target }} 
+            manylinux: auto
+            args: --release --out dist -m man-parse-rust/Cargo.toml
+
+     #- name: Build wheel 
+     #  working-directory: man-parse-rust
+     #  run: | 
+     #      pip install -U pip maturin
+     #      maturin build
+     #
+      - name: Download wheel 
+        uses: actions/upload-artifact@v3
+        with:
+            name: wheel
+            path: dist
+
